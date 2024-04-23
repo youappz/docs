@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.youappz.dev"
     }
   ],
   "security": [
@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/aliases": {
       "get": {
         "description": "Returns all plants from the system that the user has access to",
         "parameters": [
@@ -96,14 +96,14 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/aliases/{idOrAlias}": {
+      "get": {
+        "description": "Retrieves an Alias for the given host name or alias ID.",
         "parameters": [
           {
-            "name": "id",
+            "name": "idOrAlias",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "ID or name of the Alias",
             "required": true,
             "schema": {
               "type": "integer",

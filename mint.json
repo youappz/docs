@@ -29,6 +29,10 @@
     {
       "name": "Cli Reference",
       "url": "cli"
+    },
+    {
+      "name": "Api Reference",
+      "url": "api-reference"
     }
   ],
   "navigation": [
@@ -50,10 +54,13 @@
       ]
     },
     {
-      "group": "Cli Documentation",
+      "group": "Appz Cli",
       "pages": [
         "cli/introduction",
-        "cli/project-linking"
+        "cli/deploying",
+        "cli/project-linking",
+        "cli/global-options"
+        
       ]
     },
     {
@@ -81,7 +88,28 @@
         "cli/commands/transfer",
         "cli/commands/upgrade"
       ]
-    }
+    },
+    {
+      "group": "API Documentation",
+      "pages": [
+        "api-reference/introduction"
+      ]
+    },
+    {
+      "group": "Endpoint Examples",
+      "pages": [
+          "aliases",
+          {
+              "group": "aliases",
+              "pages": [
+                "api-reference/endpoint/aliases/assign",
+                "api-reference/endpoint/aliases/delete",
+                "api-reference/endpoint/aliases/get",
+                "api-reference/endpoint/aliases/list"
+              ]
+          }
+      ]
+  }    
   ],
   "footerSocials": {
     "x": "https://x.com/youappz",

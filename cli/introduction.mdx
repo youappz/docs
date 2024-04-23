@@ -15,11 +15,3 @@ If you'd like to interface with the platform programmatically, check out the RES
 ## Using in a CI/CD environment
 
 Appz CLI requires you to log in and authenticate before accessing resources or performing administrative tasks. In a terminal environment, you can use appz login, which requires manual input. In a CI/CD environment where manual input is not possible, you can create a token on your tokens page and then use the --token option to authenticate.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
