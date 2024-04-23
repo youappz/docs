@@ -1,0 +1,25 @@
+---
+title: 'Appz CLI Overview'
+sidebarTitle: "Overview"
+---
+
+
+Learn how to use the Appz command-line interface (CLI) to manage and configure your Appz Projects from the command line.
+
+Appz gives you multiple ways to interact with and configure your Appz Projects. With the command-line interface (CLI) you can interact with the Appz platform using a terminal, or through an automated system, enabling you to retrieve logs, manage certificates, replicate your deployment environment locally, manage Domain Name System (DNS) records, and more.
+
+If you'd like to interface with the platform programmatically, check out the REST API documentation.
+
+
+
+## Using in a CI/CD environment
+
+Appz CLI requires you to log in and authenticate before accessing resources or performing administrative tasks. In a terminal environment, you can use appz login, which requires manual input. In a CI/CD environment where manual input is not possible, you can create a token on your tokens page and then use the --token option to authenticate.
+
+```json
+"security": [
+  {
+    "bearerAuth": []
+  }
+]
+```

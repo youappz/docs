@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Documentation",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -27,25 +27,8 @@
   },
   "tabs": [
     {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Cli Reference",
+      "url": "cli"
     }
   ],
   "navigation": [
@@ -53,33 +36,50 @@
       "group": "Get Started",
       "pages": [
         "introduction",
+        "installation",
         "quickstart",
         "development"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Frameworks",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "frameworks/astro",
+        "frameworks/hexo",
+        "frameworks/hugo"        
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "Cli Documentation",
       "pages": [
-        "api-reference/introduction"
+        "cli/introduction",
+        "cli/project-linking"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Commands",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "cli/commands/alias",
+        "cli/commands/build",
+        "cli/commands/deploy",
+        "cli/commands/dev",
+        "cli/commands/domains",
+        "cli/commands/info",
+        "cli/commands/init",
+        "cli/commands/link",
+        "cli/commands/list",
+        "cli/commands/login",
+        "cli/commands/logout",
+        "cli/commands/project",
+        "cli/commands/promote",
+        "cli/commands/pull",
+        "cli/commands/remove",
+        "cli/commands/rollback",
+        "cli/commands/switch",
+        "cli/commands/setup",
+        "cli/commands/teams",
+        "cli/commands/transfer",
+        "cli/commands/upgrade"
       ]
     }
   ],

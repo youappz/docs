@@ -1,0 +1,29 @@
+version: "3.6"
+
+services:
+  appz-manage:
+    build:
+      context: .
+    image: appz-docs
+    container_name: appz-docs
+    restart: "always"
+    volumes:
+      - ./:/usr/src
+      - ~/.aws/:/root/.aws:ro
+      - node_modules:/usr/src/node_modules
+      - .pnpm-store/v3:/usr/src/.pnpm-store/v3
+    ports:
+      - "3004:3000"
+      - "8002:8002"
+      - "44901:44901"
+    env_file:
+      - .env
+    networks:
+      - youappz-network
+volumes:
+  node_modules:
+networks:
+  youappz-network:
+    name: youappz
+    external: true
+
