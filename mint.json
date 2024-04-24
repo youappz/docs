@@ -97,8 +97,7 @@
     },
     {
       "group": "Endpoint Examples",
-      "pages": [
-          "aliases",
+      "pages": [          
           {
               "group": "aliases",
               "pages": [

@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://api.youappz.dev",
+      "url": "http://localhost:3002",
       "description": "Production API"
     }
   ],
@@ -126,7 +126,7 @@
               "example": "example.appz.dev"
             },
             "required": true,
-            "name": "alias",
+            "name": "idOrAlias",
             "in": "path"
           }
         ],
@@ -137,6 +137,30 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Alias"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns an error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
@@ -151,10 +175,10 @@
             "schema": {
               "type": "string",
               "minLength": 3,
-              "example": "example.appz.dev"
+              "example": "123"
             },
             "required": true,
-            "name": "alias",
+            "name": "aliasId",
             "in": "path"
           }
         ],
@@ -181,7 +205,28 @@
             }
           },
           "400": {
-            "description": "One of the provided values in the request query is invalid."
+            "description": "Returns an error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
           },
           "401": {
             "description": ""
