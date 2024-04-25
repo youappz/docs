@@ -106,7 +106,18 @@
                 "api-reference/endpoint/aliases/get",
                 "api-reference/endpoint/aliases/list"
               ]
-          }
+          },
+          {
+            "group": "teams",
+            "pages": [
+              "api-reference/endpoint/teams/create",
+              "api-reference/endpoint/teams/list",
+              "api-reference/endpoint/teams/get",
+              "api-reference/endpoint/teams/update",
+              "api-reference/endpoint/teams/delete",
+              "api-reference/endpoint/teams/invite"
+            ]
+        }
       ]
   }    
   ],

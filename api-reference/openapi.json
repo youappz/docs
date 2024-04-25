@@ -23,6 +23,97 @@
       }
     },
     "schemas": {
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "avatar": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdBy": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "updatedAt": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "avatar",
+          "createdBy",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Invitation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "teamId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "roleId": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "createdBy": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "updatedAt": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "teamId",
+          "roleId",
+          "createdBy",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "Alias": {
         "type": "object",
         "properties": {
@@ -116,8 +207,717 @@
     "parameters": {}
   },
   "paths": {
+    "/teams": {
+      "get": {
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Maximum number of teams to list from a request",
+              "query": {
+                "name": "limit",
+                "in": "query"
+              },
+              "example": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get teams created after this JavaScript timestamp",
+              "query": {
+                "name": "since",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get teams created before this JavaScript timestamp",
+              "query": {
+                "name": "until",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "until",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The paginated list of teams",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "teams": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Team"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number",
+                          "description": "Amount of items in the current page.",
+                          "example": 20
+                        },
+                        "next": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the next page.",
+                          "example": 1540095775951
+                        },
+                        "prev": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the previous page.",
+                          "example": 1540095775951
+                        }
+                      },
+                      "required": [
+                        "count",
+                        "next",
+                        "prev"
+                      ],
+                      "description": "This object contains information related to the pagination of the current request, including the necessary parameters to get the next or previous page of data.",
+                      "title": "Pagination"
+                    }
+                  },
+                  "required": [
+                    "teams",
+                    "pagination"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "teams"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "slug": {
+                    "type": "string",
+                    "maxLength": 48,
+                    "description": "The desired slug for the Team",
+                    "body": {
+                      "name": "slug",
+                      "in": "body"
+                    },
+                    "example": "a-random-team"
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "description": "The desired name for the Team. It will be generated from the provided slug if nothing is provided",
+                    "body": {
+                      "name": "name",
+                      "in": "body"
+                    },
+                    "example": "A Random Team"
+                  }
+                },
+                "required": [
+                  "slug"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The team was created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{teamIdOrSlug}": {
+      "get": {
+        "description": "Get a paginated list of team members for the provided team.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "description": "The Team identifier/slug to perform the request on behalf of.",
+              "example": "team_LLHUOMOoDlqOp8wPE4kFo9pE"
+            },
+            "required": true,
+            "name": "teamIdOrSlug",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested Team",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          }
+        }
+      },
+      "patch": {
+        "description": "Update the information of a Team specified by the teamId parameter. The request body should contain the information that will be updated on the Team.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "description": "The Team identifier/slug to perform the request on behalf of.",
+              "example": "team_LLHUOMOoDlqOp8wPE4kFo9pE"
+            },
+            "required": true,
+            "name": "teamIdOrSlug",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "maxLength": 140,
+                    "description": "A short text that describes the team.",
+                    "body": {
+                      "name": "description",
+                      "in": "body"
+                    },
+                    "example": "Our mission is to make cloud computing accessible to everyone"
+                  },
+                  "emailDomain": {
+                    "type": "string",
+                    "body": {
+                      "name": "emailDomain",
+                      "in": "body"
+                    },
+                    "example": "example.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "description": "The name of the Team",
+                    "body": {
+                      "name": "name",
+                      "in": "body"
+                    },
+                    "example": "my team"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "A new slug for the team",
+                    "body": {
+                      "name": "slug",
+                      "in": "slug"
+                    },
+                    "example": "my-team"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated Team",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "description": "The Team identifier/slug to perform the request on behalf of.",
+              "example": "team_LLHUOMOoDlqOp8wPE4kFo9pE"
+            },
+            "required": true,
+            "name": "teamIdOrSlug",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The Team was successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "teamId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "teamId"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          }
+        }
+      }
+    },
+    "/teams/{teamId}/members": {
+      "post": {
+        "description": "Invite a user to join the team specified in the URL. The authenticated user needs to be an `OWNER` in order to successfully invoke this endpoint. The user can be specified with an email or an ID. If both email and ID are provided, ID will take priority.",
+        "tags": [
+          "teams"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The email address of the user to invite",
+                    "body": {
+                      "name": "email",
+                      "in": "body"
+                    },
+                    "example": "john@example.com"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "OWNER",
+                      "MEMBER",
+                      "DEVELOPER",
+                      "BILLING",
+                      "VIEWER",
+                      "CONTRIBUTOR"
+                    ],
+                    "description": "The role of the user to invite",
+                    "body": {
+                      "name": "role",
+                      "in": "body"
+                    },
+                    "example": "MEMBER"
+                  },
+                  "uid": {
+                    "type": "string",
+                    "description": "The id of the user to invite",
+                    "body": {
+                      "name": "uid",
+                      "in": "body"
+                    },
+                    "example": "kr1PsOIzqEL5Xg6M4VZcZosf"
+                  }
+                },
+                "required": [
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The member was successfully added to the team",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          }
+        }
+      }
+    },
+    "/aliases": {
+      "get": {
+        "tags": [
+          "aliases"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "Filter aliases from the given projectId",
+              "query": {
+                "name": "projectId",
+                "in": "query"
+              },
+              "example": "prj_12HKQaOmR5t5Uy6vdcQsNIiZgHGB"
+            },
+            "required": false,
+            "name": "projectId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": false,
+            "name": "teamId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Maximum number of aliases to list from a request",
+              "query": {
+                "name": "limit",
+                "in": "query"
+              },
+              "example": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get aliases created after this JavaScript timestamp",
+              "query": {
+                "name": "since",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get aliases created before this JavaScript timestamp",
+              "query": {
+                "name": "until",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "until",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The paginated list of aliases",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "aliases": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Alias"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number",
+                          "description": "Amount of items in the current page.",
+                          "example": 20
+                        },
+                        "next": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the next page.",
+                          "example": 1540095775951
+                        },
+                        "prev": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the previous page.",
+                          "example": 1540095775951
+                        }
+                      },
+                      "required": [
+                        "count",
+                        "next",
+                        "prev"
+                      ],
+                      "description": "This object contains information related to the pagination of the current request, including the necessary parameters to get the next or previous page of data.",
+                      "title": "Pagination"
+                    }
+                  },
+                  "required": [
+                    "aliases",
+                    "pagination"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/aliases/{idOrAlias}": {
       "get": {
+        "tags": [
+          "aliases"
+        ],
         "parameters": [
           {
             "schema": {
@@ -142,7 +942,7 @@
             }
           },
           "400": {
-            "description": "Returns an error",
+            "description": "Returns a validation error",
             "content": {
               "application/json": {
                 "schema": {
@@ -154,7 +954,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Bad Request"
+                      "example": "One of the provided values in the request body/query is invalid"
                     }
                   },
                   "required": [
@@ -170,11 +970,15 @@
     },
     "/aliases/{aliasId}": {
       "delete": {
+        "tags": [
+          "aliases"
+        ],
         "parameters": [
           {
             "schema": {
               "type": "string",
               "minLength": 3,
+              "description": "The ID or alias that will be removed",
               "example": "123"
             },
             "required": true,
@@ -205,7 +1009,7 @@
             }
           },
           "400": {
-            "description": "Returns an error",
+            "description": "Returns a validation error",
             "content": {
               "application/json": {
                 "schema": {
@@ -217,7 +1021,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Bad Request"
+                      "example": "One of the provided values in the request body/query is invalid"
                     }
                   },
                   "required": [
@@ -235,7 +1039,7 @@
             "description": "You do not have permission to access this resource."
           },
           "404": {
-            "description": "The alias was not found"
+            "description": "The aliases was not found"
           }
         }
       }
