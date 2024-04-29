@@ -1,33 +1,142 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'Appz Rest Api'
+description: 'The Appz REST API is a REST-styled API that gives full control over the entire Appz platform.'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
 
-## Welcome
+Appz REST API allows developers to interact programmatically with their Appz account and services using HTTP requests.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+With the API, developers can deploy new versions of web applications, manage custom domains, retrieve information about deployments, and manage secrets and environment variables for projects.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+The API supports any programming language or framework that can send HTTP requests.
+
+You can use the commands listed below with curl by providing your token.
+
+## API Basics
+Our API is exposed as an HTTP/1 and HTTP/2 service over SSL. All endpoints live under the URL https://api.youappz.com and then generally follow the REST architecture.
+
+## Server Specs
+HTTP and TLS
+The API supports HTTP versions 1, 1.1, and 2, although HTTP/2 is preferred.
+
+TLS versions 1.2 and 1.3 are supported, with resumption.
+
+For more information on TLS support, refer to the SSL Labs report.
+
+## Content Type
+All requests must be encoded as JSON with the Content-Type: application/json header. If not otherwise specified, responses from the Appz API, including errors, are encoded exclusively as JSON as well.
 
 ## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+Appz Access Tokens are required to authenticate and use the Appz API.
+```js index.js
+  Authorization: Bearer <TOKEN>
 ```
+> The Authorization header with an access token.
+
+### Creating an Access Token
+Access Tokens can be created and managed from inside your [account settings](https://console.youappz.com/accounts/token).
+
+1.  In the upper-right corner of your dashboard, click your profile picture, then select Settings
+2.  Select Tokens from the sidebar
+3.  Enter a descriptive name for the token
+4.  Choose the scope from the list of Teams in the drop-down menu. The scope ensures that only your specified Team(s) can use an Access Token
+5.  From the drop-down, select an expiration date for the Token
+6.  Click Create Token
+7.  Once you've created an Access Token, securely store the value as it will not be shown again.
+
+### Expiration
+Setting an expiration date on an Access Token is highly recommended and is considered one of the standard security practices that helps keep your information secure. You can select from a default list of expiration dates ranging from 1 day to 1 year. You can view the expiration date of your Access Tokens on the tokens page.
+
+### Accessing Resources Owned by a Team
+By default, you can access resources contained within your own user account (personal).
+
+To access resources owned by a team, or create a project for a specific team, you must first find the Team ID.
+
+After you obtained the Team ID, append it as a query string at the end of the API endpoint URL:
+
+```javascript index.js
+https://api.youappz.com/deployments?teamId=[teamID]
+```
+
+> Replace [teamID] with the Team ID you obtained.
+
+<Info>You still need to provide an API token through the Authorization header.</Info>
+
+### Failed Authentication
+If authentication is unsuccessful for a request, the error status code 403 is returned.
+
+## Pagination
+When the API response includes an array of records, a pagination object is returned when the total number of records present is greater than the limit per request. The default value of this limit is 20 but it can be changed by passing a value to the query parameter limit when the request is made. The maximum possible value of limit is 100.
+
+You can then use the pagination object to make additional requests and obtain all the records.
+
+The pagination object is structured as shown in the example below:
+
+```JSON pagination-structure
+
+{
+  "pagination": {
+    "count": 20, //Amount of items in the current page.
+    "next": 1555072968396, //Timestamp that must be used to request the next page.
+    "prev": 1555413045188 //Timestamp that must be used to request the previous page.
+  }
+}
+```
+> Pagination object returned with response
+In order to obtain the records for the next batch, perform the following actions:
+
+1.  Send a request to the same API endpoint
+2.  Include the query parameter until with a value equal to the timestamp value of next returned in the previous request
+3.  Repeat this sequence until the pagination object has a next value of null
+This is an example of applying this sequence with Node.js to save all the projects in your personal account to a json file:
+
+```javascript pagination-example.js
+
+const axios = require('axios');
+const fs = require('fs');
+const appzToken = 'yourtokenvalue'; //Replace with your token
+const apiEndPt = 'https://api.youappz.com/projects';
+ 
+let config = {
+  method: 'get',
+  url: apiEndPt,
+  headers: {
+    Authorization: 'Bearer ' + appzToken,
+  },
+};
+let results = [];
+ 
+(function loop() {
+  axios(config)
+    .then(function (response) {
+      results.push(...response.data.projects);
+      if (response.data.pagination.next !== null) {
+        config.url = `${apiEndPt}?until=${response.data.pagination.next}`;
+        loop();
+      } else {
+        //you can use the final results object and for example save it to a json file
+        fs.writeFileSync('projects.json', JSON.stringify(results));
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+})();
+```
+
+> Save all the Projects in your Appz personal account to projects.json
+
+## Errors
+All API endpoints contain a code and message within the error responses, though some API endpoints extend the error object to contain other information. Each endpoint that does this will be documented in their appropriate section.
+
+While we recommend that you write error messages that fit your needs and provide your users with the best experience, our message fields are designed to be neutral, not contain sensitive information, and can be safely passed down to user interfaces.
+
+```JSON error-response
+{
+  "error": {
+    "code": "forbidden",
+    "message": "Not authorized"
+  }
+}
+```
+> An example of an unauthorized request error.

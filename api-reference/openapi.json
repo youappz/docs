@@ -114,6 +114,44 @@
           "updatedAt"
         ]
       },
+      "Members": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "updatedAt": {
+            "type": "number"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "name",
+          "email",
+          "createdAt",
+          "updatedAt",
+          "role"
+        ]
+      },
       "Alias": {
         "type": "object",
         "properties": {
@@ -751,6 +789,1199 @@
             "description": "The teams was not found"
           }
         }
+      },
+      "get": {
+        "description": "Get a paginated list of team members for the provided team.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "Only return members with the specified team role.",
+              "query": {
+                "name": "role",
+                "in": "query"
+              },
+              "example": "OWNER"
+            },
+            "required": false,
+            "name": "role",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Maximum number of members to list from a request",
+              "query": {
+                "name": "limit",
+                "in": "query"
+              },
+              "example": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get members created after this JavaScript timestamp",
+              "query": {
+                "name": "since",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get members created before this JavaScript timestamp",
+              "query": {
+                "name": "until",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "until",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Members"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number",
+                          "description": "Amount of items in the current page.",
+                          "example": 20
+                        },
+                        "next": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the next page.",
+                          "example": 1540095775951
+                        },
+                        "prev": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the previous page.",
+                          "example": 1540095775951
+                        }
+                      },
+                      "required": [
+                        "count",
+                        "next",
+                        "prev"
+                      ],
+                      "description": "This object contains information related to the pagination of the current request, including the necessary parameters to get the next or previous page of data.",
+                      "title": "Pagination"
+                    }
+                  },
+                  "required": [
+                    "members",
+                    "pagination"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          }
+        }
+      }
+    },
+    "/teams/{teamId}/join": {
+      "get": {
+        "description": "Join a team with a provided invite code or team ID.",
+        "tags": [
+          "teams"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The invite code to join the team.",
+              "query": {
+                "name": "inviteCode",
+                "in": "query"
+              },
+              "example": "fisdh38aejkeivn34nslfore9vjtn4ls"
+            },
+            "required": true,
+            "name": "inviteCode",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully joined a team.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Maximum number of projects to list from a request",
+              "query": {
+                "name": "limit",
+                "in": "query"
+              },
+              "example": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get projects created after this JavaScript timestamp",
+              "query": {
+                "name": "since",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get projects created before this JavaScript timestamp",
+              "query": {
+                "name": "until",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "until",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The paginated list of projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "projects": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "teamId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "alias": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "buildCommand": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "devCommand": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "installCommand": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "framework": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "outputDirectory": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "commandForIgnoringBuildStep": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "createdAt": {
+                            "type": "number"
+                          },
+                          "updatedAt": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "teamId",
+                          "alias",
+                          "buildCommand",
+                          "devCommand",
+                          "installCommand",
+                          "framework",
+                          "outputDirectory",
+                          "commandForIgnoringBuildStep",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number",
+                          "description": "Amount of items in the current page.",
+                          "example": 20
+                        },
+                        "next": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the next page.",
+                          "example": 1540095775951
+                        },
+                        "prev": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the previous page.",
+                          "example": 1540095775951
+                        }
+                      },
+                      "required": [
+                        "count",
+                        "next",
+                        "prev"
+                      ],
+                      "description": "This object contains information related to the pagination of the current request, including the necessary parameters to get the next or previous page of data.",
+                      "title": "Pagination"
+                    }
+                  },
+                  "required": [
+                    "projects",
+                    "pagination"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "projects"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100,
+                    "description": "The desired name for the project",
+                    "example": "a-project-name"
+                  },
+                  "teamId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "alias": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "buildCommand": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "devCommand": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "installCommand": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "framework": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "outputDirectory": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "commandForIgnoringBuildStep": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The project was successfuly created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "teamId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "alias": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "buildCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "devCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "installCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "framework": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "outputDirectory": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "commandForIgnoringBuildStep": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "teamId",
+                    "alias",
+                    "buildCommand",
+                    "devCommand",
+                    "installCommand",
+                    "framework",
+                    "outputDirectory",
+                    "commandForIgnoringBuildStep",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "409": {
+            "description": "A projects with the provided name/id already exists."
+          }
+        }
+      }
+    },
+    "/projects/{idOrName}": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The unique project identifier or the project name",
+              "example": "prj_LLHUOMOoDlqOp8wPE4kFo9pE or my-project-name"
+            },
+            "required": true,
+            "name": "idOrName",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The project information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "teamId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "alias": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "buildCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "devCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "installCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "framework": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "outputDirectory": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "commandForIgnoringBuildStep": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "teamId",
+                    "alias",
+                    "buildCommand",
+                    "devCommand",
+                    "installCommand",
+                    "framework",
+                    "outputDirectory",
+                    "commandForIgnoringBuildStep",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          }
+        }
+      },
+      "patch": {
+        "description": "Update the fields of a project using either its name or id.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The unique project identifier or the project name",
+              "example": "prj_LLHUOMOoDlqOp8wPE4kFo9pE or my-project-name"
+            },
+            "required": true,
+            "name": "idOrName",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100,
+                    "description": "The desired name for the project",
+                    "example": "a-project-name"
+                  },
+                  "teamId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "alias": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "buildCommand": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "devCommand": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "installCommand": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "framework": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "outputDirectory": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "commandForIgnoringBuildStep": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The project was successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "teamId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "alias": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "buildCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "devCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "installCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "framework": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "outputDirectory": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "commandForIgnoringBuildStep": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "teamId",
+                    "alias",
+                    "buildCommand",
+                    "devCommand",
+                    "installCommand",
+                    "framework",
+                    "outputDirectory",
+                    "commandForIgnoringBuildStep",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          },
+          "409": {
+            "description": "A teams with the provided name/id already exists."
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a specific project by passing either the project id or name in the URL.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The unique project identifier or the project name",
+              "example": "prj_LLHUOMOoDlqOp8wPE4kFo9pE or my-project-name"
+            },
+            "required": true,
+            "name": "idOrName",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team slug to perform the request on behalf of.",
+              "query": {
+                "name": "slug",
+                "in": "query"
+              },
+              "example": "my-team"
+            },
+            "required": true,
+            "name": "slug",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The project was successfuly removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "teamId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "alias": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "buildCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "devCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "installCommand": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "framework": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "outputDirectory": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "commandForIgnoringBuildStep": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "teamId",
+                    "alias",
+                    "buildCommand",
+                    "devCommand",
+                    "installCommand",
+                    "framework",
+                    "outputDirectory",
+                    "commandForIgnoringBuildStep",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The teams was not found"
+          },
+          "409": {
+            "description": "A teams with the provided name/id already exists."
+          }
+        }
       }
     },
     "/aliases": {
@@ -783,7 +2014,7 @@
               },
               "example": "team_xbtegd63gdg5636gdg"
             },
-            "required": false,
+            "required": true,
             "name": "teamId",
             "in": "query"
           },

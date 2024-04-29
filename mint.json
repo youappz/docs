@@ -108,6 +108,16 @@
               ]
           },
           {
+            "group": "projects",
+            "pages": [
+              "api-reference/endpoint/projects/create",
+              "api-reference/endpoint/projects/get",
+              "api-reference/endpoint/projects/list",
+              "api-reference/endpoint/projects/update",
+              "api-reference/endpoint/projects/delete"
+            ]
+        },
+          {
             "group": "teams",
             "pages": [
               "api-reference/endpoint/teams/create",
@@ -115,7 +125,9 @@
               "api-reference/endpoint/teams/get",
               "api-reference/endpoint/teams/update",
               "api-reference/endpoint/teams/delete",
-              "api-reference/endpoint/teams/invite"
+              "api-reference/endpoint/teams/invite",
+              "api-reference/endpoint/teams/join",
+              "api-reference/endpoint/teams/list-members"
             ]
         }
       ]
