@@ -82,12 +82,14 @@ The pagination object is structured as shown in the example below:
   }
 }
 ```
-> Pagination object returned with response
+> Pagination object returned with response.
+
 In order to obtain the records for the next batch, perform the following actions:
 
 1.  Send a request to the same API endpoint
 2.  Include the query parameter until with a value equal to the timestamp value of next returned in the previous request
 3.  Repeat this sequence until the pagination object has a next value of null
+
 This is an example of applying this sequence with Node.js to save all the projects in your personal account to a json file:
 
 ```javascript pagination-example.js
