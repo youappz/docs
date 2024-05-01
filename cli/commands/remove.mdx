@@ -1,4 +1,50 @@
 ---
 title: 'appz remove'
 sidebarTitle: "remove"
+description: 'Learn how to remove a deployment using the `appz remove` CLI command, which can also be abbreviated as `appz rm`. This command is used to delete deployments by ID or associated with a specific Appz Project.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+Deployments can also be removed from the Project Overview page on the Appz Dashboard.
+
+## Usage
+```bash terminal
+appz remove [deployment-url]
+```
+>   Executing the `appz remove` command to delete a deployment from the Appz platform.
+
+## Extended Usage
+```bash terminal
+appz remove [deployment-url-1 deployment-url-2]
+```
+
+>   Using the `appz remove` command to delete multiple deployments from the Appz platform.
+
+```bash terminal
+appz remove [project-name]
+```
+>   Using the `appz remove` command to delete all deployments for an Appz Project from the Appz platform.
+
+Using the project name will result in the removal of the entire Appz Project from the current scope unless the `--safe` option is used.
+
+## Unique Options
+These options are specific to the appz remove command.
+
+### Safe
+The `--safe` option, abbreviated `-s`, allows you to omit the removal of deployments that have an active preview URL or production domain when a project name is specified.
+
+```bash terminal
+appz remove my-project --safe
+```
+>   Executing the appz remove command with the --safe option.
+
+### Yes
+The `--yes` option, shorthand `-y`, can be used to bypass the confirmation step for removing a deployment or Appz Project.
+
+```bash terminal
+appz remove my-deployment.com --yes
+```
+>   Using the appz remove command with the --yes option.
+
+<GlobalOptionsComponent command={'appz rollback'} />

@@ -1,4 +1,30 @@
 ---
 title: 'appz teams'
 sidebarTitle: "teams"
+description: 'Learn how to list, add, remove, and manage your teams using the `appz teams` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+The `appz teams` command is designed to manage teams, offering capabilities to list, add, and invite new team members.
+
+You can manage teams with additional options and more comprehensive control via the Appz Dashboard.
+
+## Usage
+```bash terminal
+appz teams list
+```
+>   Executing the `appz teams` command to list all teams you’re a member of.
+
+## Extended Usage
+```bash terminal
+appz teams add
+```
+>   Using the appz teams command to create a new team.
+
+```bash terminal
+appz teams invite [email]
+```
+>   Using the appz teams command to invite a new team member.
+
+<GlobalOptionsComponent command={'appz dev'} />

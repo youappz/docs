@@ -1,4 +1,39 @@
 ---
 title: 'appz dev'
 sidebarTitle: "dev"
+description: 'Learn how to mimic the Appz deployment environment locally and test your Appz Project before deploying using the `appz dev` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+The `appz dev` command enables you to simulate the Appz deployment setting right in your local environment.
+
+Should the Development Command be set in your Project Settings, it will influence the behavior of `appz dev` for everyone in your team.
+
+
+## Usage
+```bash terminal
+appz dev
+```
+>   Run the appz dev command from the root directory of an Appz Project.
+
+## Unique Options
+These options are specific to the `appz dev` command only.
+
+### Listen
+Use the `--listen` option (short form -l) to define which port `appz dev` should operate on.
+
+```bash terminal
+appz dev --listen 5005
+```
+>   Running the appz dev command with the `--listen` option.
+
+### Yes
+The `--yes` option helps bypass prompts when initiating a new Appz Project, automatically using the default scope and current directory for the Appz Project's name and location.
+
+```bash terminal
+appz dev --yes
+```
+>   Running the appz dev command with the `--yes` option.
+
+<GlobalOptionsComponent command={'appz dev'} />

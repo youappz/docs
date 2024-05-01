@@ -1,4 +1,32 @@
 ---
 title: 'appz promote'
 sidebarTitle: "promote"
+description: 'Learn how to promote an existing deployment using the `appz promote` CLI command.'
 ---
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+The `appz promote` command is used to elevate an existing deployment to be the current deployment.
+
+Deployments created for the Production environment are typically the target for promotions. It's possible to promote deployments from the Preview environment, but you will need to confirm this action, resulting in a new production deployment. The prompt can be bypassed by using the `--yes` option.
+
+## Usage
+```bash terminal
+appz promote [deployment-id or url]
+```
+>   Executing the `appz promote` command will make the specified deployment the current one.
+
+## Unique Options
+These options are specific only to the appz promote command.
+
+### Timeout
+The `--timeout` option specifies the duration that the appz promote command will wait for the promotion to be finalized. If a timeout occurs, it does not impact the actual promotion, which will continue as planned.
+
+Promoting a deployment with a timeout of 0 means that the command will exit immediately after the promotion request is made.
+
+```bash
+appz promote https://example-app-6vd6bhoqt.appz.dev --timeout=5m
+```
+
+>   Using the appz promote command with the --timeout option.
+
+<GlobalOptionsComponent command={'appz promote'} />

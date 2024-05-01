@@ -1,4 +1,46 @@
 ---
 title: 'appz build'
 sidebarTitle: "build"
+description: 'Learn how to build an Appz Project locally or in your CI environment using the `appz build` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+The `appz build` command facilitates the building of an Appz Project either locally or in your own CI setup. The generated build artifacts are stored in the `.appz/output` directory in accordance with the Build Output API.
+
+Using this in tandem with the `appz deploy --prebuilt` command allows for an Appz Deployment to be initiated without disclosing the source code of the Appz Project to Appz.
+
+This command is also useful for troubleshooting an Appz Project by generating error messages for a failed local build, or by analyzing the build artifacts to understand better how Appz will handle the Deployment.
+
+It's advisable to execute the `appz pull` command before running `appz build` to make sure the latest Project Settings and Environment Variables are downloaded locally.
+
+## Usage
+```bash terminal
+appz build
+```
+> Use the `appz build` command for constructing an Appz Project.
+
+## Unique Options
+These are specific options that apply only to the `appz build` command.
+
+### Production
+The `--prod` flag should be used when you aim to build the Appz Project with Production Environment Variables. By default, the Preview Environment Variables are applied.
+
+```bash terminal
+appz build --prod
+```
+> Building an Appz Project using the `--prod` flag.
+
+### Yes
+The `--yes` option allows you to skip the confirmation step and directly fetch environment variables and Project Settings if they are missing locally.
+
+```bash terminal
+appz build --yes
+```
+>   Executing the appz build command with the `--yes` option.
+
+<GlobalOptionsComponent command={'appz build'} />
+
+
+## Related Guides
+[How can I leverage the Appz CLI for customized workflows?](/guides/using-appz-cli-with-custom-workflows)

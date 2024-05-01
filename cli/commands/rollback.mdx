@@ -1,4 +1,36 @@
 ---
 title: 'appz rollback'
 sidebarTitle: "rollback"
+description: 'Learn how to roll back your production deployments to previous deployments using the `appz rollback` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+The `appz rollback` command is utilized to revert production deployments to earlier ones.
+
+## Usage
+```bash terminal
+appz rollback
+```
+>   Executing appz rollback retrieves the status of any ongoing rollbacks.
+
+```bash terminal
+appz rollback [deployment-id or url]
+```
+>   Using appz rollback to revert to a previous deployment.
+
+## Unique Options
+These options are exclusive to the appz rollback command.
+
+### Timeout
+The `--timeout` option dictates how long the appz rollback command will wait for the rollback to finalize. It does not influence the actual rollback process, which will continue regardless.
+
+A timeout setting of 0 means that the command will exit immediately after initiating the rollback.
+
+```bash terminal
+appz rollback https://example-app-6vd6bhoqt.appz.dev
+```
+>   Using the appz rollback command on the deployment at https://example-app-6vd6bhoqt.appz.dev.
+
+
+<GlobalOptionsComponent command={'appz rollback'} />

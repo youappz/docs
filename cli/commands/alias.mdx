@@ -4,7 +4,7 @@ sidebarTitle: "alias"
 description: 'Learn how to apply custom domain aliases to your Appz deployments using the appz alias CLI command.'
 ---
 
-The appz alias command allows you to apply custom domains to your deployments.
+The `appz alias` command allows you to apply custom domains to your deployments.
 
 When a new deployment is created (with our Git Integration, Appz CLI, or the REST API), the platform will automatically apply any custom domains configured in the project settings.
 
@@ -12,10 +12,10 @@ Any custom domain that doesn't have a custom preview branch configured (there ca
 
 Custom domains that do have a custom preview branch configured, however, only get applied when using the Git Integration.
 
-If you're not using the Git Integration, appz alias is a great solution if you still need to apply custom domains based on Git branches, or other heuristics.
+If you're not using the Git Integration, `appz alias` is a great solution if you still need to apply custom domains based on Git branches, or other heuristics.
 
 ## Preferred production commands
-The appz alias command is not the recommended way to promote production deployments to specific domains. Instead, you can use the following commands:
+The `appz alias` command is not the recommended way to promote production deployments to specific domains. Instead, you can use the following commands:
 
 -   **`appz --prod --skip-domain`**: Use to skip custom domain assignment when deploying to production and creating a staged deployment
 -   **`appz promote [deployment-id or url]`**: Use to promote your staged deployment to your custom domains
@@ -25,37 +25,41 @@ The appz alias command is not the recommended way to promote production deployme
 
 In general, the command allows for assigning custom domains to any deployment.
 
-Make sure to not include the HTTP protocol (e.g. https://) for the [custom-domain] parameter.
+Make sure to not include the HTTP protocol (e.g. https://) for the `[custom-domain]` parameter.
 
-> Using the appz alias command to assign a custom domain to a deployment.
+
 ```bash
 appz alias set [deployment-url] [custom-domain]
 ```
+> Using the `appz alias` command to assign a custom domain to a deployment.
 
-> Using the appz alias command to remove a custom domain from a deployment.
 ```bash
 appz alias rm [custom-domain]
 ```
+> Using the `appz alias` command to remove a custom domain from a deployment.
 
-> Using the appz alias command to list custom domains that were assigned to deployments.
 ```bash
 appz alias ls
 ```
+> Using the `appz alias` command to list custom domains that were assigned to deployments.
 
 ## Unique options
-These are options that only apply to the appz alias command.
+These are options that only apply to the `appz alias` command.
 
-Yes
-The --yes option can be used to bypass the confirmation prompt when removing an alias.
+### Yes
+The `--yes` option can be used to bypass the confirmation prompt when removing an alias.
 
-> Using the appz alias rm command with the --yes option.
 ```bash
 appz alias rm [custom-domain] --yes
 ```
+> Using the appz alias rm command with the `--yes` option.
+
 
 ## Limit
-The --limit option can be used to specify the maximum number of aliases returned when using ls. The default value is 20 and the maximum is 100.
+The `--limit` option can be used to specify the maximum number of aliases returned when using ls. The default value is 20 and the maximum is 100.
 
 ```bash
 appz alias ls --limit 100
 ```
+
+>   Using the `appz alias ls` command with the `--limit` option.

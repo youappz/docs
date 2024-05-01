@@ -1,4 +1,48 @@
 ---
 title: 'appz list'
 sidebarTitle: "list"
+description: 'Learn how to list all recent deployments for the current Appz Project using the `appz list` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+The `appz list` command, which can be shortened to `appz ls`, provides a list of recent deployments for the currently-linked Appz Project.
+
+## Usage
+```bash terminal
+appz list
+```
+>   Executing the `appz list` command to retrieve information about multiple deployments for the currently-linked Appz Project.
+
+## Extended Usage
+```bash terminal
+appz list [project-name]
+```
+>   Using the `appz list` command to retrieve information about deployments for a specific Appz Project.
+
+```bash terminal
+appz list [project-name] [--meta foo=bar]
+```
+>   Using the `appz list` command to retrieve information about deployments filtered by metadata.
+
+## Unique Options
+These options are specific to the `appz list` command.
+
+### Meta
+The `--meta` option, abbreviated as `-m`, allows filtering results based on Appz Project metadata.
+
+```bash terminal
+appz list --meta key1=value1 key2=value2
+```
+>   Using the `appz list` command with the `--meta` option.
+
+### Yes
+The `--yes` option can be used to bypass questions when setting up a new Appz Project. The questions will be automatically answered using the default scope and the current directory for the Appz Project name and location.
+
+```bash terminal
+appz list --yes
+```
+>   Using the `appz list` command with the `--yes` option.
+
+
+<GlobalOptionsComponent command={'appz list'} />

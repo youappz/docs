@@ -1,4 +1,22 @@
 ---
 title: 'appz transfer'
 sidebarTitle: "transfer"
+description: 'Learn how to transfer a project between Appz accounts using the `appz transfer` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+
+
+Projects can be transferred between plans as long as the project owner is a member of both the source and destination teams. For instance, a project can be transferred from a personal account(Lite) to an Pro account, and vice versa.
+
+To initiate a transfer, you must be an owner of the team you're transferring from and a member of the team you're transferring to. For example, you can transfer a project from your personal account(Lite) to an Pro team account, and vice versa, provided you're an owner on the Pro team.
+
+During the transfer process, all of the project’s dependencies will be seamlessly moved or copied over to the new Appz Team namespace without any downtime.
+
+
+```bash terminal
+appz transfer
+```
+
+<GlobalOptionsComponent command={'appz transfer'} />
