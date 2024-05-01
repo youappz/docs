@@ -108,13 +108,29 @@
               ]
           },
           {
+            "group": "authentication",
+            "pages": [
+              "api-reference/endpoint/auth/email-login",
+              "api-reference/endpoint/auth/verify"
+            ]
+        },
+          {
+            "group": "domains",
+            "pages": [
+              "api-reference/endpoint/domains/list",         
+              "api-reference/endpoint/domains/delete" 
+            ]
+        },
+          {
             "group": "projects",
             "pages": [
               "api-reference/endpoint/projects/create",
               "api-reference/endpoint/projects/get",
               "api-reference/endpoint/projects/list",
               "api-reference/endpoint/projects/update",
-              "api-reference/endpoint/projects/delete"
+              "api-reference/endpoint/projects/delete",
+              "api-reference/endpoint/projects/add-domain",
+              "api-reference/endpoint/projects/list-domains"
             ]
         },
           {
@@ -129,7 +145,13 @@
               "api-reference/endpoint/teams/join",
               "api-reference/endpoint/teams/list-members"
             ]
-        }
+        },
+        {
+          "group": "users",
+          "pages": [
+            "api-reference/endpoint/users/get"            
+          ]
+      }
       ]
   }    
   ],

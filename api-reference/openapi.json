@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://api.youappz.com",
+      "url": "https://api.youappz.dev",
       "description": "Production API"
     }
   ],
@@ -23,6 +23,40 @@
       }
     },
     "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "updatedAt": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "name",
+          "email",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "Team": {
         "type": "object",
         "properties": {
@@ -165,28 +199,16 @@
             ]
           },
           "alias": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           },
           "domain": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           },
           "zoneId": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           },
           "target": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           },
           "redirect": {
             "type": [
@@ -213,16 +235,10 @@
             ]
           },
           "deploymentId": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           },
           "projectId": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           }
         },
         "required": [
@@ -240,11 +256,285 @@
           "deploymentId",
           "projectId"
         ]
+      },
+      "Domain": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "serviceType": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdBy": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "updatedAt": {
+            "type": "number"
+          },
+          "expiresAt": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "teamId",
+          "name",
+          "serviceType",
+          "createdBy",
+          "createdAt",
+          "updatedAt",
+          "expiresAt"
+        ]
       }
     },
     "parameters": {}
   },
   "paths": {
+    "/auth/signin": {
+      "post": {
+        "description": "Request a new login for a user to get a token. This will respond with a verification token and send an email to confirm the request. Once confirmed you can use the verification token to get an authentication token.",
+        "tags": [
+          "authentication"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The user email."
+                  },
+                  "tokenName": {
+                    "type": "string",
+                    "description": "The desired name for the token. It will be displayed on the user account details."
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful and an email was sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "The token used to verify the user accepted the login request."
+                    },
+                    "securityCode": {
+                      "type": "string",
+                      "description": "The code the user is going to receive on the email. Must be displayed to the user so they can verify the request is the correct."
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "securityCode"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/verify": {
+      "get": {
+        "description": "Verify the user accepted the login request and get an authentication token. The user email address and the token received after requesting the login must be added to the URL as a query string with the names `email` and `token`.",
+        "tags": [
+          "authentication"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "email"
+            },
+            "required": false,
+            "name": "email",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "token",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The verification was successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "teamId": {
+                      "type": "string",
+                      "description": "The Team identifier or Team slug to perform the request on behalf of.",
+                      "query": {
+                        "name": "teamId",
+                        "in": "query"
+                      },
+                      "example": "team_xbtegd63gdg5636gdg"
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "email",
+                    "teamId"
+                  ],
+                  "description": "The verification was successful."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The authentication was not found"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "description": "Retrieves information related to the currently authenticated User.",
+        "tags": [
+          "users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response retrieving user data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The users was not found"
+          }
+        }
+      }
+    },
     "/teams": {
       "get": {
         "tags": [
@@ -799,7 +1089,7 @@
           {
             "schema": {
               "type": "string",
-              "description": "The Team identifier to perform the request on behalf of.",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
               "query": {
                 "name": "teamId",
                 "in": "query"
@@ -966,7 +1256,7 @@
           {
             "schema": {
               "type": "string",
-              "description": "The Team identifier to perform the request on behalf of.",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
               "query": {
                 "name": "teamId",
                 "in": "query"
@@ -1045,7 +1335,7 @@
           {
             "schema": {
               "type": "string",
-              "description": "The Team identifier to perform the request on behalf of.",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
               "query": {
                 "name": "teamId",
                 "in": "query"
@@ -1618,6 +1908,34 @@
             "required": true,
             "name": "idOrName",
             "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team slug to perform the request on behalf of.",
+              "query": {
+                "name": "slug",
+                "in": "query"
+              },
+              "example": "my-team"
+            },
+            "required": true,
+            "name": "slug",
+            "in": "query"
           }
         ],
         "requestBody": {
@@ -1806,10 +2124,10 @@
             "description": "You do not have permission to access this resource."
           },
           "404": {
-            "description": "The teams was not found"
+            "description": "The projects was not found"
           },
           "409": {
-            "description": "A teams with the provided name/id already exists."
+            "description": "A projects with the provided name/id already exists."
           }
         }
       },
@@ -1832,7 +2150,7 @@
           {
             "schema": {
               "type": "string",
-              "description": "The Team identifier to perform the request on behalf of.",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
               "query": {
                 "name": "teamId",
                 "in": "query"
@@ -1976,10 +2294,526 @@
             "description": "You do not have permission to access this resource."
           },
           "404": {
-            "description": "The teams was not found"
+            "description": "The projects was not found"
           },
           "409": {
-            "description": "A teams with the provided name/id already exists."
+            "description": "A projects with the provided name/id already exists."
+          }
+        }
+      }
+    },
+    "/projects/{idOrName}/domains": {
+      "post": {
+        "description": "Add a domain to the project by passing its domain name and specifying the project by either the project `id` or `name` in the URL.",
+        "tags": [
+          "projects"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The unique project identifier or the project name",
+              "example": "prj_LLHUOMOoDlqOp8wPE4kFo9pE or my-project-name"
+            },
+            "required": true,
+            "name": "idOrName",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alias": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  },
+                  "redirect": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "redirectStatusCode": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "enum": [
+                      301,
+                      302,
+                      307,
+                      308
+                    ],
+                    "description": "Status code for domain redirect",
+                    "example": 302
+                  },
+                  "deploymentId": {
+                    "type": "string"
+                  },
+                  "projectId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "alias",
+                  "target",
+                  "deploymentId",
+                  "projectId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The domain was successfully added to the project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "teamId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "alias": {
+                      "type": "string"
+                    },
+                    "domain": {
+                      "type": "string"
+                    },
+                    "zoneId": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": "string"
+                    },
+                    "redirect": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "redirectStatusCode": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        301,
+                        302,
+                        307,
+                        308
+                      ],
+                      "description": "Status code for domain redirect",
+                      "example": 302
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    },
+                    "updatedAt": {
+                      "type": "number"
+                    },
+                    "createdBy": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "deploymentId": {
+                      "type": "string"
+                    },
+                    "projectId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "teamId",
+                    "alias",
+                    "domain",
+                    "zoneId",
+                    "target",
+                    "redirect",
+                    "redirectStatusCode",
+                    "createdAt",
+                    "updatedAt",
+                    "createdBy",
+                    "deploymentId",
+                    "projectId"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The projects was not found"
+          },
+          "409": {
+            "description": "A projects with the provided name/id already exists."
+          }
+        }
+      },
+      "get": {
+        "description": "Retrieve the domains associated with a given project by passing either the project `id` or `name` in the URL.",
+        "tags": [
+          "domains"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The unique project identifier or the project name",
+              "example": "prj_LLHUOMOoDlqOp8wPE4kFo9pE or my-project-name"
+            },
+            "required": true,
+            "name": "idOrName",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "false"
+                  ]
+                }
+              ]
+            },
+            "required": false,
+            "name": "production",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "false"
+                  ]
+                }
+              ]
+            },
+            "required": false,
+            "name": "redirects",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "false"
+                  ]
+                }
+              ]
+            },
+            "required": false,
+            "name": "verified",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Maximum number of domains to list from a request",
+              "query": {
+                "name": "limit",
+                "in": "query"
+              },
+              "example": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get domains created after this JavaScript timestamp",
+              "query": {
+                "name": "since",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get domains created before this JavaScript timestamp",
+              "query": {
+                "name": "until",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "until",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            },
+            "required": false,
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response retrieving a list of domains",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "domains": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "teamId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "alias": {
+                            "type": "string"
+                          },
+                          "domain": {
+                            "type": "string"
+                          },
+                          "zoneId": {
+                            "type": "string"
+                          },
+                          "target": {
+                            "type": "string"
+                          },
+                          "redirect": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "redirectStatusCode": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              301,
+                              302,
+                              307,
+                              308
+                            ],
+                            "description": "Status code for domain redirect",
+                            "example": 302
+                          },
+                          "createdAt": {
+                            "type": "number"
+                          },
+                          "updatedAt": {
+                            "type": "number"
+                          },
+                          "createdBy": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "deploymentId": {
+                            "type": "string"
+                          },
+                          "projectId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "teamId",
+                          "alias",
+                          "domain",
+                          "zoneId",
+                          "target",
+                          "redirect",
+                          "redirectStatusCode",
+                          "createdAt",
+                          "updatedAt",
+                          "createdBy",
+                          "deploymentId",
+                          "projectId"
+                        ]
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number",
+                          "description": "Amount of items in the current page.",
+                          "example": 20
+                        },
+                        "next": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the next page.",
+                          "example": 1540095775951
+                        },
+                        "prev": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the previous page.",
+                          "example": 1540095775951
+                        }
+                      },
+                      "required": [
+                        "count",
+                        "next",
+                        "prev"
+                      ],
+                      "description": "This object contains information related to the pagination of the current request, including the necessary parameters to get the next or previous page of data.",
+                      "title": "Pagination"
+                    }
+                  },
+                  "required": [
+                    "domains",
+                    "pagination"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
           }
         }
       }
@@ -2007,7 +2841,7 @@
           {
             "schema": {
               "type": "string",
-              "description": "The Team identifier to perform the request on behalf of.",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
               "query": {
                 "name": "teamId",
                 "in": "query"
@@ -2271,6 +3105,231 @@
           },
           "404": {
             "description": "The aliases was not found"
+          }
+        }
+      }
+    },
+    "/domains": {
+      "get": {
+        "description": "Retrieves a list of domains registered for the authenticated user or team. By default it returns the last 20 domains if no limit is provided.",
+        "tags": [
+          "domains"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Maximum number of domains to list from a request",
+              "query": {
+                "name": "limit",
+                "in": "query"
+              },
+              "example": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get domains created after this JavaScript timestamp",
+              "query": {
+                "name": "since",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "description": "Get domains created before this JavaScript timestamp",
+              "query": {
+                "name": "until",
+                "in": "query"
+              },
+              "example": "1540095775941"
+            },
+            "required": false,
+            "name": "until",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response retrieving a list of domains.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "domains": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Domain"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "number",
+                          "description": "Amount of items in the current page.",
+                          "example": 20
+                        },
+                        "next": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the next page.",
+                          "example": 1540095775951
+                        },
+                        "prev": {
+                          "type": [
+                            "number",
+                            "null"
+                          ],
+                          "description": "Timestamp that must be used to request the previous page.",
+                          "example": 1540095775951
+                        }
+                      },
+                      "required": [
+                        "count",
+                        "next",
+                        "prev"
+                      ],
+                      "description": "This object contains information related to the pagination of the current request, including the necessary parameters to get the next or previous page of data.",
+                      "title": "Pagination"
+                    }
+                  },
+                  "required": [
+                    "domains",
+                    "pagination"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          }
+        }
+      }
+    },
+    "/domains/{domain}": {
+      "delete": {
+        "description": "Delete a previously registered domain name from Appz. Deleting a domain will automatically remove any associated aliases.",
+        "tags": [
+          "domains"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The name of the domain to be deleted."
+            },
+            "required": true,
+            "description": "The name of the domain to be deleted.",
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "The Team identifier or Team slug to perform the request on behalf of.",
+              "query": {
+                "name": "teamId",
+                "in": "query"
+              },
+              "example": "team_xbtegd63gdg5636gdg"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The domain was successfully deleted and no content is returned."
+          },
+          "400": {
+            "description": "Returns a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One of the provided values in the request body/query is invalid"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": "You do not have permission to access this resource."
+          },
+          "404": {
+            "description": "The domains was not found"
           }
         }
       }
