@@ -1,4 +1,68 @@
 ---
 title: 'appz domains'
 sidebarTitle: "domains"
+description: "Learn how to buy, sell, transfer, and manage your domains using the `appz domains` CLI command."
 ---
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+<Info>You can manage domains with more detailed options and greater control under a Appz Project's Domains tab from the Appz Dashboard.</Info>
+
+## Usage
+```bash terminal
+appz domains ls
+```
+>   Using the `appz domains` command to list all domains under the current scope.
+
+## Extended Usage
+```bash terminal
+appz domains inspect [domain]
+```
+>   Using the `appz domains` command to retrieve information about a specific domain.
+
+```bash terminal
+appz domains add [domain] [project]
+```
+>   Using the `appz domains` command to add a domain to the current scope or an Appz Project.
+
+```bash terminal
+appz domains rm [domain]
+```
+>   Using the `appz domains` command to remove a domain from the current scope.
+
+```bash terminal
+appz domains buy [domain]
+```
+>   Using the `appz domains` command to buy a domain for the current scope.
+
+```bash terminal
+appz domains move [domain] [scope-name]
+```
+>   Using the `appz domains` command to move a domain to another scope.
+
+```bash terminal
+appz domains transfer-in [domain]
+```
+>   Using the `appz domains` command to transfer in a domain to the current scope.
+
+## Unique Options
+These options are specific to the `appz domains` command.
+
+### Yes
+```bash terminal
+appz domains rm [domain] --yes
+```
+>   Using the `appz domains` rm command with the `--yes` option to bypass the confirmation prompt when removing a domain.
+
+### Limit
+```bash terminal
+appz domains ls --limit 100
+```
+>   Using the `appz domains ls` command with the `--limit` option to specify the maximum number of domains returned. The default limit is set to 20, with a maximum of 100.
+
+### Force
+```bash terminal
+appz domains add my-domain.com my-project --force
+```
+>   Using the `appz domains add` command with the `--force` option to forcefully assign a domain to a project, removing it from any existing one.
+
+<GlobalOptionsComponent command={'appz deploy'} />

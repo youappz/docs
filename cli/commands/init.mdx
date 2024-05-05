@@ -1,4 +1,59 @@
 ---
 title: 'appz init'
 sidebarTitle: "init"
+description: 'Learn how to initialize example Appz Projects locally using the `appz init` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+
+The `appz init` command is used to initialize Appz Projects locally by leveraging several sources. It can pull examples from the Appz examples repository, clone directly from GitHub, GitLab, or Bitbucket repository URLs, or use public download URLs with template archive files such as zip, tar, or gz.
+
+## Usage
+```bash
+appz init
+```
+> Using the `appz init` command to initialize an Appz Project locally from the Appz examples repository.
+
+## Extended Usage
+### Initialize from a Project Name
+```bash
+appz init [project-name]
+```
+>   Using the `appz init` command to specifically initialize an Appz Project locally from the examples repository.
+
+### Initialize from a Project Name and Rename Directory
+```bash
+appz init [project-name] [new-project-name]
+```
+>   Using the `appz init` command to initialize a specific Appz Project locally and rename the directory.
+
+### Initialize from GitHub/GitLab/Bitbucket
+```bash
+appz init [repo-url]
+```
+>   Using the `appz init` command to initialize a project from any GitHub, GitLab, or Bitbucket repository URL.
+
+### Initialize from a Public Download URL
+
+```bash
+appz init [download-url]
+```
+>   Using the `appz init` command to initialize a project from a url of multiple archive formats. Currently supports `.tar (gz, xz, zstd)` and `.zip`.
+
+## Unique Options
+### Force
+The `--force` option, abbreviated as `-f`, is used to forcibly overwrite an existing local directory.
+
+```bash
+appz init --force
+```
+>   Using the `appz init` command with the `--force` option to forcefully replace any existing directory.
+
+```bash
+appz init gatsby my-project-directory --force
+```
+>   Using the `appz init` command with the `--force` option, specifying a project example and a new directory name.
+
+
+<GlobalOptionsComponent command={'appz init'} />

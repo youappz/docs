@@ -1,4 +1,116 @@
 ---
 title: 'appz deploy'
 sidebarTitle: "deploy"
+description: 'Learn how to deploy your Appz projects using the `appz deploy` CLI command.'
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+Learn how to deploy your Appz projects using the `appz deploy` CLI command. The `appz deploy` command deploys Appz projects and can be executed from the project's root directory or by specifying a path. The command appz operates without needing the 'deploy' subcommand. This document will use 'appz' to refer to appz deploy.
+
+Usage
+```bash terminal
+appz
+```
+>   Using the `appz` command from the root of an Appz project directory.
+
+## Extended Usage
+
+```bash terminal
+appz  --cwd [path-to-project]
+```
+>   Using the `appz` command and supplying a path to the root directory of the Appz project.
+
+```bash terminal
+appz deploy --prebuilt
+```
+
+>   Using the `appz` command to deploy a prebuilt Appz project, typically with `appz build`. See [appz build](/cli/commands/build) for more details.
+
+## Standard Output Usage
+When deploying, stdout is always the Deployment URL.
+
+```bash terminal
+appz > deployment-url.txt
+```
+>   Using the `appz` command to deploy and write stdout to a text file.
+
+### Deploying to a Custom Domain
+Example bash script for a CI/CD workflow to alias all preview deployments to a custom domain. Note that defining the scope may be necessary when using appz alias.
+
+```bash deployDomain.sh
+# save stdout and stderr to files
+appz deploy >deployment-url.txt 2>error.txt
+ 
+# check the exit code
+code=$?
+if [ $code -eq 0 ]; then
+    # Use the deployment url from stdout for the next step of your workflow
+    deploymentUrl=$(cat deployment-url.txt)
+    appz alias $deploymentUrl my-custom-domain.com
+else
+    # Handle the error
+    errorMessage=$(cat error.txt)
+    echo "There was an error: $errorMessage"
+fi
+```
+>   The script deploys your project and assigns the deployment URL saved in stdout to the custom domain using `appz alias`.
+
+## Standard Error Usage
+ Example script to check for errors during deployment, useful in CI/CD workflows:
+
+```bash checkDeploy.sh
+# save stdout and stderr to files
+appz deploy >deployment-url.txt 2>error.txt
+ 
+# check the exit code
+code=$?
+if [ $code -eq 0 ]; then
+    deploymentUrl=$(cat deployment-url.txt)
+    echo $deploymentUrl
+else
+    errorMessage=$(cat error.txt)
+    echo "There was an error: $errorMessage"
+fi
+```
+
+## Unique Options
+These options only apply to the `appz` command.
+
+### Build Env
+```bash terminal
+appz --build-env KEY1=value1 --build-env KEY2=value2
+```
+>   Using the `appz` command with the `--build-env` option.
+
+### Yes
+```bash terminal
+appz --yes
+```
+>   Using the `appz` command with the `--yes` option to skip questions when setting up a new Appz project.
+
+### Env
+```bash terminal
+appz --env KEY1=value1 --env KEY2=value2
+```
+>   Using the `appz` command with the `--env` option to provide runtime environment variables.
+
+### Prod
+```bash terminal
+appz --prod
+```
+>   Using the `appz` command with the `--prod` option to create a deployment for a production domain specified in the Appz project dashboard.
+
+### Skip Domain
+```bash terminal
+appz --prod --skip-domain
+```
+>   Using the `appz` command with the `--skip-domain` option to disable the automatic promotion of relevant domains to a new production deployment.
+
+### No Wait
+```bash terminal
+appz --no-wait
+```
+>   Using the `appz` command with the `--no-wait` option to not wait for a deployment to finish before exiting.
+
+<GlobalOptionsComponent command={'appz deploy'} />
