@@ -46,14 +46,22 @@
       ]
     },
     {
+      "group": "CMS",
+      "pages": [
+        "cms/wordpress",
+        "cms/ghost"
+      ]
+    },
+    {
       "group": "Frameworks",
       "pages": [
         "frameworks/astro",
+        "frameworks/docusaurus",
+        "frameworks/11ty",
         "frameworks/hexo",
         "frameworks/hugo",
         "frameworks/qwik",
-        "frameworks/zola",
-        "frameworks/11ty"
+        "frameworks/zola"
       ]
     },
     {
