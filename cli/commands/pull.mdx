@@ -1,4 +1,52 @@
 ---
 title: 'appz pull'
 sidebarTitle: "pull"
+description: "Learn how to update your local project with remote environment variables using the appz pull CLI command."
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+The `appz pull` command is used to store Environment Variables and Project Settings in a local cache (under .appz/.env.$target.local) for offline use of `appz build` and `appz dev`. If you aren't using those commands, you don't need to run `appz pull`.
+
+When environment variables or project settings are updated on Appz, remember to use `appz pull` again to update your local environment variable and project settings values under .appz/.
+
+To download Environment Variables to a specific file (like .env), use `appz env pull` instead.
+
+## Usage
+```bash terminal
+appz pull
+```
+>   Using appz pull fetches the latest "development" Environment Variables and Project Settings from the cloud.
+
+```bash terminal
+appz pull --environment=preview
+```
+>   Using `appz pull` fetches the latest "preview" Environment Variables and Project Settings from the cloud.
+
+```bash terminal
+appz pull --environment=preview --git-branch=feature-branch
+```
+>   Using `appz pull` fetches the "feature-branch" Environment Variables and Project Settings from the cloud.
+
+```bash terminal
+appz pull --environment=production
+```
+>   Using `appz pull` fetches the latest "production" Environment Variables and Project Settings from the cloud.
+
+## Unique Options
+These options are specific to the `appz pull` command.
+
+### Yes
+```bash terminal
+appz pull --yes
+```
+>   Using the `appz pull` command with the `--yes` option to skip questions you are asked when setting up a new Appz Project. The questions will be answered using the default scope and the current directory for the Appz Project name and location.
+
+
+
+
+
+
+
+
+<GlobalOptionsComponent command={'appz pull'} />

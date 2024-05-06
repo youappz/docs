@@ -1,40 +1,35 @@
 ---
 title: 'Deploying Projects from Appz CLI'
 sidebarTitle: 'Deploying from Cli'
-description: 'Learn how to deploy your Appz Projects from Appz CLI using the appz or appz deploy commands.'
+description: 'Learn how to deploy your Appz Projects from Appz CLI using the `appz` or `appz deploy` commands.'
 icon: "bolt-auto"
 ---
 
 
-Deploying from source
-The appz command is used to deploy Appz Projects and can be used from either the root of the Appz Project directory or by providing a path.
+## Deploying from source
+The `appz` command is used to deploy Appz Projects and can be used from either the root of the Appz Project directory or by providing a path.
 
-```bash
+```bash terminal
 appz
 ```
-<Info>
-  Deploys the current Appz project, when run from the Appz Project root.
-</Info>
+> Deploys the current Appz project, when run from the Appz Project root.
 
 
-You can alternatively use the appz deploy command for the same effect, if you want to be more explicit.
+You can alternatively use the [`appz deploy` command](/cli/commands/deploy) for the same effect, if you want to be more explicit.
 
-```bash
+```bash terminal
 appz [path-to-project]
 ```
+> Deploys the Appz project found at the provided path, when it's a Appz Project root.
 
-<Info>
-  Deploys the Appz project found at the provided path, when it's a Appz Project root.
-</Info>
 
 When deploying, stdout is always the Deployment URL.
 
-```bash
+```bash terminal
 appz > deployment-url.txt
 ```
-<Info>
-Writes the Deployment URL output from the deploy command to a text file.
-</Info>
+> Writes the Deployment URL output from the deploy command to a text file.
+
 
 ## Relevant commands
 - [deploy](/cli/commands/deploy)
@@ -44,13 +39,13 @@ By default, when you promote a deployment to production, your domain will point 
 
 1. Turn off the auto-assignment of domains for the current production deployment:
 
-```bash
+```bash terminal
 appz --prod --skip-domain
 ```
 
 2. When you are ready, manually promote the staged deployment to production:
 
-```bash
+```bash terminal
 appz promote [deployment-id or url]
 ```
 
@@ -64,19 +59,18 @@ You can build Appz projects locally to inspect the build outputs before they are
 
 It's also useful for debugging build outputs.
 
-```bash
+```bash terminal
 appz build
 ```
 
-Using the appz command to deploy and write stdout to a text file.
+> Using the `appz command` to deploy and write stdout to a text file.
 
 This produces .appz/output in the Build Output API format. You can review the output, then deploy with:
 
-```bash
+```bash terminal
 appz deploy --prebuilt
 ```
-
-Deploy the build outputs in .appz/output produced by appz build.
+> Deploy the build outputs in .appz/output produced by appz build.
 
 ## Relevant commands
 - [build](/cli/commands/build)

@@ -1,4 +1,33 @@
 ---
 title: 'appz link'
 sidebarTitle: "link"
+description: "Learn how to link a local directory to an Appz Project using the `appz link` CLI command."
 ---
+
+import { GlobalOptionsComponent } from '/snippets/global-options.mdx'
+
+## Usage
+```bash terminal
+appz link
+```
+>   Using the `appz link` command to link the current directory to an Appz Project.
+
+## Extended Usage
+```bash terminal
+appz link [path-to-directory]
+```
+>   Using the `appz link` command and supplying a path to the local directory of the Appz Project.
+
+## Unique Options
+These options are specific only to the `appz link` command.
+
+### Yes
+
+Using the `appz link` command with the `--yes` option to skip questions you are asked when setting up a new Appz Project. The questions will be answered using the default scope and the current directory for the Appz Project name and location.
+
+```bash terminal
+appz link --yes
+``` 
+
+
+<GlobalOptionsComponent command={'appz link'} />
