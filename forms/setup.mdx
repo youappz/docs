@@ -1,0 +1,81 @@
+---
+title: 'Forms Setup'
+sidebarTitle: 'Setup'
+---
+Appz’s serverless form handling allows you to manage forms effortlessly without the need for extra API calls or additional JavaScript. Once enabled, the built-in form detection feature empowers our build system to automatically parse your HTML at deployment time, eliminating the necessity for you to make API calls or embed extra JavaScript on your site.
+
+To begin, activate automatic form detection and then incorporate an `appz` attribute to your HTML form.
+
+<Tip>
+Curious about how Appz handles form submissions?
+
+Explore our [form submissions](/forms/submisions) documentation to discover more about the form submissions UI, API endpoints, and additional details. 
+</Tip>
+
+
+## HTML Forms
+Integrate an HTML form into your site using either a `data-appz="true"` or an `appz` attribute within the `<form>` tag. Deploy your site with this form, and you will start receiving [submissions](/forms/submisions) through your Appz site administration panel.
+
+The `name` attribute of your form determines its identification in the Appz UI. If your site hosts multiple forms, ensure each one has a unique name attribute.
+
+Below is an example of how to utilize either the `data-appz="true"` attribute or the `appz` attribute in your form:
+
+
+<Tabs>
+  <Tab title="Form with data-appz attribute">
+    
+```html
+<form name="contact" method="POST" data-appz="true">
+  <p>
+    <label>Your Name: <input type="text" name="name" /></label>
+  </p>
+  <p>
+    <label>Your Email: <input type="email" name="email" /></label>
+  </p>
+  <p>
+    <label>Your Role: <select name="role[]" multiple>
+      <option value="leader">Leader</option>
+      <option value="follower">Follower</option>
+    </select></label>
+  </p>
+  <p>
+    <label>Message: <textarea name="message"></textarea></label>
+  </p>
+  <p>
+    <button type="submit">Send</button>
+  </p>
+</form>
+```
+  </Tab>
+  <Tab title="Form with appz attribute">
+    
+```html
+<form name="contact" method="POST" appz>
+  <p>
+    <label>Your Name: <input type="text" name="name" /></label>
+  </p>
+  <p>
+    <label>Your Email: <input type="email" name="email" /></label>
+  </p>
+  <p>
+    <label>Your Role: <select name="role[]" multiple>
+      <option value="leader">Leader</option>
+      <option value="follower">Follower</option>
+    </select></label>
+  </p>
+  <p>
+    <label>Message: <textarea name="message"></textarea></label>
+  </p>
+  <p>
+    <button type="submit">Send</button>
+  </p>
+</form>
+```
+    </Tab>
+</Tabs>
+
+When Appz processes the static HTML of your form, the build system automatically removes the `data-appz="true"` or `appz` attribute from the `<form>` tag and injects a hidden input named `form-name`. In the HTML that is deployed, the `data-appz="true"` or `appz` attribute will be removed, and the hidden `form-name` input will have a value that corresponds to the `name` attribute of the `<form>` like this:
+
+```html
+<input type="hidden" name="form-name" value="contact">
+```

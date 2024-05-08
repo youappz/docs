@@ -37,31 +37,87 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Welcome to Appz",
       "pages": [
         "introduction",
-        "installation",
-        "quickstart",
-        "development"
+        "installation"
       ]
     },
     {
-      "group": "CMS",
+      "group": "",
       "pages": [
-        "cms/wordpress",
-        "cms/ghost"
+        {
+          "group": "Get Started",
+          "icon": "play",
+          "pages": [
+            {
+              "group": "1. Project and Deployments",
+              "pages": [
+                "get-started-with-appz/projects-deployments",
+                "get-started-with-appz/template",
+                "get-started-with-appz/import"
+              ]
+            },
+            {
+              "group": "2. Add a Domain",
+              "pages": [
+                "get-started-with-appz/use-existing"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Frameworks",
+          "icon": "code",
+          "pages": [
+            "frameworks/astro",
+            "frameworks/docusaurus",
+            "frameworks/11ty",
+            "frameworks/hexo",
+            "frameworks/hugo",
+            "frameworks/qwik",
+            "frameworks/zola"
+          ]
+        },
+        {
+          "group": "CMS",
+          "icon": "layer-group",
+          "pages": [
+            "cms/wordpress",
+            "cms/ghost"
+          ]
+        }
       ]
     },
     {
-      "group": "Frameworks",
+      "group": "Platform",
       "pages": [
-        "frameworks/astro",
-        "frameworks/docusaurus",
-        "frameworks/11ty",
-        "frameworks/hexo",
-        "frameworks/hugo",
-        "frameworks/qwik",
-        "frameworks/zola"
+        {
+          "group": "Forms",
+          "icon": "wpforms",
+          "pages": [
+            "forms/setup",
+            "forms/submissions",
+            "forms/notifications",
+            {
+              "group": "Spam filtering",
+              "pages": [
+                "forms/spam-filtering/recaptcha-v3",
+                "forms/spam-filtering/recaptcha-v2",
+                "forms/spam-filtering/hcaptcha",
+                "forms/spam-filtering/honeypot"
+              ]
+            },
+            {
+              "group": "Webhooks",
+              "pages": [
+                "forms/webhooks/overview",
+                "forms/webhooks/setup"
+              ]
+            },
+            "forms/usage-and-billing"
+          ]
+        }
       ]
     },
     {
@@ -71,7 +127,6 @@
         "cli/deploying",
         "cli/project-linking",
         "cli/global-options"
-        
       ]
     },
     {
@@ -108,63 +163,63 @@
     },
     {
       "group": "Endpoint Examples",
-      "pages": [          
-          {
-              "group": "aliases",
-              "pages": [
-                "api-reference/endpoint/aliases/assign",
-                "api-reference/endpoint/aliases/delete",
-                "api-reference/endpoint/aliases/get",
-                "api-reference/endpoint/aliases/list"
-              ]
-          },
-          {
-            "group": "authentication",
-            "pages": [
-              "api-reference/endpoint/auth/email-login",
-              "api-reference/endpoint/auth/verify"
-            ]
+      "pages": [
+        {
+          "group": "aliases",
+          "pages": [
+            "api-reference/endpoint/aliases/assign",
+            "api-reference/endpoint/aliases/delete",
+            "api-reference/endpoint/aliases/get",
+            "api-reference/endpoint/aliases/list"
+          ]
         },
-          {
-            "group": "domains",
-            "pages": [
-              "api-reference/endpoint/domains/list",         
-              "api-reference/endpoint/domains/delete" 
-            ]
+        {
+          "group": "authentication",
+          "pages": [
+            "api-reference/endpoint/auth/email-login",
+            "api-reference/endpoint/auth/verify"
+          ]
         },
-          {
-            "group": "projects",
-            "pages": [
-              "api-reference/endpoint/projects/create",
-              "api-reference/endpoint/projects/get",
-              "api-reference/endpoint/projects/list",
-              "api-reference/endpoint/projects/update",
-              "api-reference/endpoint/projects/delete",
-              "api-reference/endpoint/projects/add-domain",
-              "api-reference/endpoint/projects/list-domains"
-            ]
+        {
+          "group": "domains",
+          "pages": [
+            "api-reference/endpoint/domains/list",
+            "api-reference/endpoint/domains/delete"
+          ]
         },
-          {
-            "group": "teams",
-            "pages": [
-              "api-reference/endpoint/teams/create",
-              "api-reference/endpoint/teams/list",
-              "api-reference/endpoint/teams/get",
-              "api-reference/endpoint/teams/update",
-              "api-reference/endpoint/teams/delete",
-              "api-reference/endpoint/teams/invite",
-              "api-reference/endpoint/teams/join",
-              "api-reference/endpoint/teams/list-members"
-            ]
+        {
+          "group": "projects",
+          "pages": [
+            "api-reference/endpoint/projects/create",
+            "api-reference/endpoint/projects/get",
+            "api-reference/endpoint/projects/list",
+            "api-reference/endpoint/projects/update",
+            "api-reference/endpoint/projects/delete",
+            "api-reference/endpoint/projects/add-domain",
+            "api-reference/endpoint/projects/list-domains"
+          ]
+        },
+        {
+          "group": "teams",
+          "pages": [
+            "api-reference/endpoint/teams/create",
+            "api-reference/endpoint/teams/list",
+            "api-reference/endpoint/teams/get",
+            "api-reference/endpoint/teams/update",
+            "api-reference/endpoint/teams/delete",
+            "api-reference/endpoint/teams/invite",
+            "api-reference/endpoint/teams/join",
+            "api-reference/endpoint/teams/list-members"
+          ]
         },
         {
           "group": "users",
           "pages": [
-            "api-reference/endpoint/users/get"            
+            "api-reference/endpoint/users/get"
           ]
-      }
+        }
       ]
-  }    
+    }
   ],
   "footerSocials": {
     "x": "https://x.com/youappz",
