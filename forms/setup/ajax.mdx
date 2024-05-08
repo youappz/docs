@@ -1,6 +1,6 @@
 ---
 title: 'Forms Setup'
-sidebarTitle: 'Setup'
+sidebarTitle: 'Ajax'
 ---
 Appz’s serverless form handling allows you to manage forms effortlessly without the need for extra API calls or additional JavaScript. Once enabled, the built-in form detection feature empowers our build system to automatically parse your HTML at deployment time, eliminating the necessity for you to make API calls or embed extra JavaScript on your site.
 
@@ -79,3 +79,20 @@ When Appz processes the static HTML of your form, the build system automatically
 ```html
 <input type="hidden" name="form-name" value="contact">
 ```
+
+## Success Messages
+When visitors successfully submit a form on your site, they are typically redirected to a default success page. This page often displays a basic, generically styled success message along with a link that directs users back to the form page.
+<img noZoom src="/images/appz-thank-you-page.png"/>
+
+## Custom Success Page
+To enhance the user experience, you can create a custom success page to replace the default one. This involves modifying the `<form>` tag to include an action attribute. This attribute should contain the path to your custom success page, which must be relative to the site root and prefixed with a /. Here is an example:
+
+```html
+<form
+  name="contact"
+  action="/pages/success"
+  method="POST"
+  data-appz="true"
+></form>
+```
+By specifying the action attribute in your form, you ensure that upon successful form submission, users are redirected to your custom-designed success page, providing a more personalized and branded experience.

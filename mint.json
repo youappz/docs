@@ -96,9 +96,23 @@
           "group": "Forms",
           "icon": "wpforms",
           "pages": [
-            "forms/setup",
-            "forms/submissions",
-            "forms/notifications",
+            {
+              "group": "Setup",              
+              "pages": [
+                "forms/setup/html-form",
+                "forms/setup/ajax",
+                "forms/setup/file-uploads"  
+              ]
+            },            
+            "forms/submissions",            
+            {
+              "group": "Features",              
+              "pages": [
+                "forms/features/notifications" ,
+                "forms/features/redirection",
+                "forms/features/autoresponse"
+              ]
+            },
             {
               "group": "Spam filtering",
               "pages": [
